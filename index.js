@@ -31,7 +31,7 @@ const client = require('./routes/client');
 const ismainClient = require('./routes/ismainClient');
 const getclient = require('./routes/getClient');
 
-import { SpeedInsights } from "@vercel/speed-insights/next"
+// import { SpeedInsights } from "@vercel/speed-insights/next"
 // Initialize Express app
 const app = express();
 app.use(express.json());
