@@ -42,10 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use('/uploads', express.static('uploads'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Serve static files from the 'uploads' directory
-// app.use('/uploads', express.static(path.join(__dirname, 'routes', 'uploads')));
-// Serve static files from the 'uploads' directory
 // app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
 
 
 // Static file serving

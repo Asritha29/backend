@@ -16,33 +16,23 @@ function ensureDirExists(dirPath) {
   }
 }
 
-// Configure Multer Storage
+// multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // Get empId and date from the request body
-    // const empId = req.body.empId;
-    const date = new Date().toISOString().split('T')[0]; // Format date as YYYY-MM-DD
-
-    // if (!empId) {
-    //   return cb(new Error('empId is required'), null);
-    // } 
-
-    // Create the directory path dynamically
     const dir = 'uploads/';
     ensureDirExists(dir);
     cb(null, dir);
   },
   filename: function (req, file, cb) {
-    cb(null, path.extname(file.originalname)); // Use original file name or modify as needed
+    // Use the original file name and add a timestamp to prevent duplicates
+    cb(null, `${Date.now()}-${file.originalname}`);
   }
 });
-
 // Multer Upload Middleware for multiple files
 const upload = multer({
   storage: storage,
   limits: { fileSize: 50 * 1024 * 1024 }, // Limit file size to 50MB
   fileFilter: (req, file, cb) => {
-    // Optional: Filter file types, e.g., accept only PDF, PNG, JPEG
     if (!file.mimetype.match(/(pdf|png|jpeg|jpg)/)) {
       return cb(new Error('Only PDF, PNG, and JPEG files are allowed!'), false);
     }
