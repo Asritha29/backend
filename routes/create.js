@@ -9,7 +9,7 @@ const Kyc = require('../model/kyc');
 const Education = require('../model/educations');
 const Expirence = require('../model/exprience');
 
-// Helper function to ensure directory exists
+
 function ensureDirExists(dirPath) {
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
     cb(null, dir);
   },
   filename: function (req, file, cb) {
-    // Use the original file name and add a timestamp to prevent duplicates
+
     cb(null, `${Date.now()}-${file.originalname}`);
   }
 });
@@ -78,19 +78,19 @@ router.post('/create', (req, res) => {
       } = req.body;
 
       // Get file paths
-      const aadhaarkycFilePath = req.files['aadhaarkyc'] ? `http://localhost:5006/uploads/${req.files['aadhaarkyc'][0].filename}` 
+      const aadhaarkycFilePath = req.files['aadhaarkyc'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['aadhaarkyc'][0].filename}` 
   : null;
 
-const educationDocFilePath = req.files['educationdoc'] ? `http://localhost:5006/uploads/${req.files['educationdoc'][0].filename}` 
+const educationDocFilePath = req.files['educationdoc'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['educationdoc'][0].filename}` 
   : null;
 
-const experienceDocFilePath = req.files['experiencedoc'] ? `http://localhost:5006/uploads/${req.files['experiencedoc'][0].filename}` 
+const experienceDocFilePath = req.files['experiencedoc'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['experiencedoc'][0].filename}` 
   : null;
 
-const empImgFilePath = req.files['empImg'] ? `http://localhost:5006/uploads/${req.files['empImg'][0].filename}` 
+const empImgFilePath = req.files['empImg'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['empImg'][0].filename}` 
   : null;
 
-const aadhaarPanUpFilePath = req.files['aadhaarPanUp'] ? `http://localhost:5006/uploads/${req.files['aadhaarPanUp'][0].filename}` 
+const aadhaarPanUpFilePath = req.files['aadhaarPanUp'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['aadhaarPanUp'][0].filename}` 
   : null;
 
 
