@@ -9,14 +9,13 @@ const Kyc = require('../model/kyc');
 const Education = require('../model/educations');
 const Experience = require('../model/exprience');
 
-// Helper function to ensure directory exists
+
 function ensureDirExists(dirPath) {
   if (!fs.existsSync(dirPath)) {
     fs.mkdirSync(dirPath, { recursive: true });
   }
 }
 
-// Configure Multer Storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       const dir = 'uploads/';
@@ -24,15 +23,14 @@ const storage = multer.diskStorage({
       cb(null, dir);
     },
     filename: function (req, file, cb) {
-      // Use the original file name and add a timestamp to prevent duplicates
       cb(null, `${Date.now()}-${file.originalname}`);
     }
   });
 
-// Multer Upload Middleware for multiple files
+//multer
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 50 * 1024 * 1024 }, // Limit file size to 50MB
+    limits: { fileSize: 50 * 1024 * 1024 }, 
     fileFilter: (req, file, cb) => {
       if (!file.mimetype.match(/(pdf|png|jpeg|jpg)/)) {
         return cb(new Error('Only PDF, PNG, and JPEG files are allowed!'), false);
@@ -48,7 +46,7 @@ const upload = multer({
   ]);
   
 
-// Update employee route
+
 router.put('/update/:empId', (req, res) => {
   const { empId } = req.params;
 
@@ -73,13 +71,13 @@ router.put('/update/:empId', (req, res) => {
       } = req.body;
 
       // Get file paths
-      const aadhaarkycFilePath = req.files['aadhaarkyc'] ? `http://localhost:5006/uploads/${req.files['aadhaarkyc'][0].filename}` : null;
-      const educationDocFilePath = req.files['educationdoc'] ? `http://localhost:5006/uploads/${req.files['educationdoc'][0].filename}` : null;
-      const experienceDocFilePath = req.files['experiencedoc'] ? `http://localhost:5006/uploads/${req.files['experiencedoc'][0].filename}` : null;
-      const empImgFilePath = req.files['empImg'] ? `http://localhost:5006/uploads/${req.files['empImg'][0].filename}` : null;
-      const aadhaarPanUpFilePath = req.files['aadhaarPanUp'] ? `http://localhost:5006/uploads/${req.files['aadhaarPanUp'][0].filename}` : null;
+      const aadhaarkycFilePath = req.files['aadhaarkyc'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['aadhaarkyc'][0].filename}` : null;
+      const educationDocFilePath = req.files['educationdoc'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['educationdoc'][0].filename}` : null;
+      const experienceDocFilePath = req.files['experiencedoc'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['experiencedoc'][0].filename}` : null;
+      const empImgFilePath = req.files['empImg'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['empImg'][0].filename}` : null;
+      const aadhaarPanUpFilePath = req.files['aadhaarPanUp'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['aadhaarPanUp'][0].filename}` : null;
 
-      // Find and update employee
+    
       const updatedEmployee = await Employee.findOneAndUpdate(
         { empId },
         {
@@ -92,7 +90,7 @@ router.put('/update/:empId', (req, res) => {
         { new: true }
       );
 
-      // Update KYC details
+     
       const updatedKyc = await Kyc.findOneAndUpdate(
         { empId },
         {
@@ -104,7 +102,7 @@ router.put('/update/:empId', (req, res) => {
         { new: true }
       );
 
-      // Update education details
+ 
       const updatedEducation = await Education.findOneAndUpdate(
         { empId },
         {
@@ -118,7 +116,7 @@ router.put('/update/:empId', (req, res) => {
         { new: true }
       );
 
-      // Update experience details
+     
       const updatedExperience = await Experience.findOneAndUpdate(
         { empId },
         {

@@ -6,15 +6,18 @@ const kycSchema = new mongoose.Schema({
     // genratedeis: String,
     aadharno:[{ 
         type:String,
-        required: false
+        required: false,
+        trim: true
     }],
     famrelation:[{
         type: String,
-        required: false
+        required: false,
+        trim: true
     }],   
     familyName:[{
         type:String,
-        required: false
+        required: false,
+        trim: true
     }],
     aadharkyc:{
         type:String
@@ -22,7 +25,11 @@ const kycSchema = new mongoose.Schema({
     empId:{
         type:String
     },
-
+    employee: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Employee', 
+        // required: true 
+    },
     
 });
 
