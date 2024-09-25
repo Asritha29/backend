@@ -24,7 +24,8 @@ const EducationSchema = new mongoose.Schema({
       }],
       educationdoc:[{
         type:String,
-        trim: true
+        trim: true,
+        required: false,
       }],
       empId:{
         type:String,

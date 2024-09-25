@@ -56,11 +56,6 @@ const employeeSchema = new mongoose.Schema({
         type: String,
         // required: true
       },
-      
-      organization:{
-        type: String,
-        // required: true
-      },
       permenentadrs:{
         type: String,
         // required: true
@@ -90,6 +85,10 @@ const employeeSchema = new mongoose.Schema({
         type: String,
         required: true
       },
+      organization:{
+        type: String,
+        // required: true
+      },
       team:{
         type: String,
       
@@ -114,10 +113,6 @@ const employeeSchema = new mongoose.Schema({
       
       },
       designation:{
-        type: String,
-       
-      },
-      medical:{
         type: String,
        
       },
@@ -168,6 +163,10 @@ const employeeSchema = new mongoose.Schema({
       ca:{
         type: String,
         required: true
+      },
+      medical:{
+        type: String,
+       
       },
       other:{
         type: String,

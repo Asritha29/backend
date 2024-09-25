@@ -3,13 +3,12 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const multer = require('multer');
 const fs = require('fs');
-const path = require('path');
 const Employee = require('../model/employee');
 const User = require('../model/user');
 const Kyc = require('../model/kyc');
 const Education = require('../model/educations');
-const Expirence = require('../model/exprience');
-
+const Experience = require('../model/experience'); 
+const BASE_URL = process.env.BASE_URL ;
 
 function ensureDirExists(dirPath) {
   if (!fs.existsSync(dirPath)) {
@@ -17,7 +16,7 @@ function ensureDirExists(dirPath) {
   }
 }
 
-// multer
+// multer setup
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const dir = 'uploads/';
@@ -25,7 +24,6 @@ const storage = multer.diskStorage({
     cb(null, dir);
   },
   filename: function (req, file, cb) {
-
     cb(null, `${Date.now()}-${file.originalname}`);
   }
 });
@@ -47,7 +45,8 @@ const upload = multer({
   { name: 'aadhaarPanUp', maxCount: 1 },
 ]);
 
-// Create a new employee route
+const getFilePath = (file) => (file ? `${BASE_URL}${file[0].filename}` : null);
+
 router.post('/create', (req, res) => {
   console.log('Incoming Request:', req.headers);
 
@@ -57,7 +56,6 @@ router.post('/create', (req, res) => {
       return res.status(400).json({ message: 'File upload failed.', error: err.message });
     }
 
-    // Ensure files are uploaded
     if (!req.files) {
       console.error('No files uploaded.');
       return res.status(400).json({ message: 'No files uploaded.' });
@@ -66,48 +64,35 @@ router.post('/create', (req, res) => {
     console.log('Uploaded Files:', req.files);
 
     try {
-      // Extract and log request body for debugging
       console.log('Request Body:', req.body);
 
       const {
-        fullName, fatherName, motherName, dob, gender, maritalStatus, phoneNumber, email, empImg, aadhaar, pan,
-        address, permenentadrs, emgContact, emgRelation, emgNumber, empId, doj, type, team, status, exitformalities,
+        fullName, fatherName, motherName, dob, gender, maritalStatus, phoneNumber, email, empId,
+        address, permenentadrs, emgContact, emgRelation, emgNumber, doj, type, team, status, exitformalities,
         managerName, designation, ismanager, country, state, district, mandal, village, nameapb, lpa, salary, netsalary,
         petrolAllow, basic, hra, ca, other, allowance, pf, pt, esi, esinumber, genratedeis, tds, insurance, incentives,
         spcialAllowances, Arrears, loan, bankName, accNo, uanNumber, ifscNumber, course, courseType, institution, formdata,
-        toDate, experience, from, to, contractStart, contractEnd, aadharno, famrelation, familyName, aadhaarkyc, educationdoc, experiencedoc,aadhaarPanUp
+        toDate, experience, from, to, contractStart, contractEnd, aadharno, famrelation, familyName
       } = req.body;
 
       // Get file paths
-      const aadhaarkycFilePath = req.files['aadhaarkyc'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['aadhaarkyc'][0].filename}` 
-  : null;
+      const aadhaarkycFilePath = getFilePath(req.files['aadhaarkyc']);
+      const educationDocFilePath = getFilePath(req.files['educationdoc']);
+      const experienceDocFilePath = getFilePath(req.files['experiencedoc']);
+      const empImgFilePath = getFilePath(req.files['empImg']);
+      const aadhaarPanUpFilePath = getFilePath(req.files['aadhaarPanUp']);
 
-const educationDocFilePath = req.files['educationdoc'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['educationdoc'][0].filename}` 
-  : null;
-
-const experienceDocFilePath = req.files['experiencedoc'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['experiencedoc'][0].filename}` 
-  : null;
-
-const empImgFilePath = req.files['empImg'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['empImg'][0].filename}` 
-  : null;
-
-const aadhaarPanUpFilePath = req.files['aadhaarPanUp'] ? `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${req.files['aadhaarPanUp'][0].filename}` 
-  : null;
-
-
-      // Create new employee
       const newEmployee = new Employee({
-        fullName, fatherName, motherName, dob, gender, maritalStatus, phoneNumber, email, empImg: empImgFilePath, aadhaar, pan,
+        fullName, fatherName, motherName, dob, gender, maritalStatus, phoneNumber, email, empImg: empImgFilePath, 
         address, permenentadrs, emgContact, emgRelation, emgNumber, empId, doj, type, team, status, exitformalities,
         managerName, designation, ismanager, country, state, district, mandal, village, nameapb, lpa, salary, netsalary,
-        petrolAllow, incentives, Arrears, spcialAllowances, basic, hra, ca, other, allowance, pf, pt, esi, esinumber, genratedeis,
-        tds, insurance, loan, bankName, accNo, uanNumber, ifscNumber,contractStart, contractEnd, aadhaarPanUp:aadhaarPanUpFilePath
+        petrolAllow, incentives, Arrears, spcialAllowances, basic, hra, ca, other, allowance, pf, pt, esi, esinumber, 
+        genratedeis, tds, insurance, loan, bankName, accNo, uanNumber, ifscNumber, contractStart, contractEnd,
+        aadhaarPanUp: aadhaarPanUpFilePath
       });
 
-      // Save employee in the database
       const savedEmployee = await newEmployee.save();
 
-      // Create new KYC record
       const newKyc = new Kyc({
         aadharno: Array.isArray(aadharno) ? aadharno : [aadharno],
         familyName: Array.isArray(familyName) ? familyName : [familyName],
@@ -118,7 +103,6 @@ const aadhaarPanUpFilePath = req.files['aadhaarPanUp'] ? `http://globusit-env.eb
 
       const savedKyc = await newKyc.save();
 
-      // create education details 
       const newEducation = new Education({
         course: Array.isArray(course) ? course : [course],
         courseType: Array.isArray(courseType) ? courseType : [courseType], 
@@ -129,11 +113,9 @@ const aadhaarPanUpFilePath = req.files['aadhaarPanUp'] ? `http://globusit-env.eb
         empId,
       });
 
-      const saveEducation = await newEducation.save();
+      const savedEducation = await newEducation.save();
 
-      // create experience details
-
-      const newExprience = new Expirence({
+      const newExperience = new Experience({ 
         experience: Array.isArray(experience) ? experience : [experience], 
         from: Array.isArray(from) ? from : [from],
         to: Array.isArray(to) ? to : [to],
@@ -141,9 +123,8 @@ const aadhaarPanUpFilePath = req.files['aadhaarPanUp'] ? `http://globusit-env.eb
         empId,
       });
 
-      const saveExprience = newExprience.save();
+      const savedExperience = await newExperience.save(); 
 
-      // Create new user linked to the employee
       const newUser = new User({
         phoneNumber,
         password: 'globusit', // Default password
@@ -151,13 +132,19 @@ const aadhaarPanUpFilePath = req.files['aadhaarPanUp'] ? `http://globusit-env.eb
         eId: savedEmployee._id,
       });
 
-      // Save user in the database
       const savedUser = await newUser.save();
 
-      res.status(201).json({ employee: savedEmployee, user: savedUser, kyc: savedKyc, education: saveEducation, exprience: saveExprience});
+      res.status(201).json({
+        message: 'Employee created successfully',
+        employee: savedEmployee,
+        user: savedUser,
+        kyc: savedKyc,
+        education: savedEducation,
+        experience: savedExperience
+      });
     } catch (error) {
       console.error('Error creating employee:', error);
-      res.status(500).json({ message: 'Failed to create employee.' });
+      res.status(500).json({ message: 'Failed to create employee.', error: error.message });
     }
   });
 });
