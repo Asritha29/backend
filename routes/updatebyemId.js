@@ -3,10 +3,10 @@ const router = express.Router();
 const multer = require('multer');
 const fs = require('fs');
 const Employee = require('../model/employee');
-const User = require('../model/user');
 const Kyc = require('../model/kyc');
 const Education = require('../model/educations');
 const Experience = require('../model/experience');
+const { Email } = require('read-excel-file');
 const BASE_URL = process.env.BASE_URL;
 
 function ensureDirExists(dirPath) {
@@ -64,7 +64,57 @@ router.put('/update/:empId', (req, res) => {
         fullName: req.body.fullName,
         fatherName: req.body.fatherName,
         motherName: req.body.motherName,
-        // ... other fields
+        dob:req.body.motherName,
+        gender:req.body.gender,
+        maritalStatus:req.body.maritalStatus,
+        phoneNumber:req.body.phoneNumber,
+        email:req.body.email,
+        address:req.body.address,
+        permenentadrs:req.body.permenentadrs,
+        emgContact:req.body.emgContact,
+        emgRelation:req.body.emgRelation,
+        emgNumber:req.body.emgNumber,
+        empId:req.body.empId,
+        doj:req.body.doj,
+        type:req.body.type,
+        team:req.body.team,
+        status:req.body.status,
+        exitformalities:req.body.exitformalities,
+        managerName:req.body.managerName,
+        designation:req.body.designation,
+        ismanager:req.body.ismanager,
+        country:req.body.country,
+        state:req.body.state,
+        district:req.body.district,
+        mandal:req.body.mandal,
+        village:req.body.village,
+        nameapb:req.body.nameapb,
+        lpa:req.body.lpa,
+        salary:req.body.salary,
+        netsalary: req.body.netsalary,
+        petrolAllow:req.body.petrolAllow,
+        incentives:req.body.incentives,
+        Arrears:req.body.Arrears,
+        spcialAllowances:req.body.spcialAllowances,
+        basic:req.body.basic,
+        hra:req.body.hra,
+        ca:req.body.ca,
+        other:req.body.other,
+        allowance:req.body.allowance, 
+        pf:req.body.pf,
+        pt:req.body.pt,
+        esi:req.body.esi,
+        esinumber:req.body.esinumber,
+        genratedeis:req.body.genratedeis,
+        tds:req.body.tds,
+        insurance:req.body.insurance,
+        loan:req.body.lone,
+        bankName:req.body.bankName,
+        accNo:req.body.accNo,
+        uanNumber:req.body.uanNumber,
+        ifscaNumber:req.body.ifscaNumber,
+        contractStart:req.body.contractStart,
+        contractEnd:req.body.contractEnd,
         empImg: getFilePath(req.files['empImg']),
         aadhaarPanUp: getFilePath(req.files['aadhaarPanUp']),
       };

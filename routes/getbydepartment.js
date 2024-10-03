@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const Client = require('../model/client');
+const Employee = require('../model/employee');
+const Kyc = require('../model/kyc');
+const Education = require('../model/educations');
+const Experience = require('../model/experience'); 
 
-router.get('/ismainClient', async (req, res) => {
+
+router.get('/department', async (req, res) => {
   try {
-    const clients = await Client.find({ ismainClient: true });
+    const clients = await Employee.find({ team});
     if (!clients || clients.length === 0) {
       return res.status(404).json({ message: 'No clients found' });
     }

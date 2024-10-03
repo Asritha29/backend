@@ -3,23 +3,26 @@ const mongoose = require('mongoose');
 const exprienceSchema = new mongoose.Schema({
     experience:[{
         type: String,
-        trim: true
+        trim: true,
+        required:false
      }],
      work:{
        type: String,
+       required:false,
        trim: true
      },
      from:[{
        type: String,
-       trim: true
+       trim: true,
+       required:false
      }],
      to:[{
        type: String,
-       trim: true
+       trim: true,
+       required:false
      }],
      experiencedoc:{
-       type:String,
-      
+       type:String,      
      },
      empId:{
         type:String,

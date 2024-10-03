@@ -21,15 +21,19 @@ const userSchema = new mongoose.Schema({
     empId:{
         type: String,
         required: true,
-        unique: true
+        unique: true 
     },
     role:{
         type:String,
-        required:true,
+        required:true,  
         enum: ['Admin', 'User', 'Hr'],
         default: 'User',
+    },
+    isFirstLogin:{
+        type:Boolean, 
+        default:true,
     }
-    
+     
 });
 
 userSchema.pre('save', async function (next) {

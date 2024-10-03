@@ -30,8 +30,8 @@ const ismanager = require('./routes/ismanager');
 const client = require('./routes/client');
 const ismainClient = require('./routes/ismainClient');
 const getclient = require('./routes/getClient');
+const resetPassword = require('./routes/reserpassword');
 
-// import { SpeedInsights } from "@vercel/speed-insights/next"
 // Initialize Express app
 const app = express();
 app.use(express.json());
@@ -43,9 +43,9 @@ app.use(cors({
 }));
 app.use(express.urlencoded({ extended: true }));
 
-// app.use('/uploads', express.static('uploads'));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads'));
 // app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
@@ -53,6 +53,14 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use("/files", express.static("files"));
 
 // Authorization Middleware
+// const authorizeRoles = (...roles) => {
+//   return (req, res, next) => {
+//     if (!roles.includes(req.user.role)) {
+//       return res.status(403).json({ error: 'Access denied. Insufficient permissions.' });
+//     }
+//     next();
+//   };
+// };
 const authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
@@ -63,6 +71,7 @@ const authorizeRoles = (...roles) => {
 };
 
 // Routes
+app.use('/user', resetPassword);
 app.use('/user', login);
 app.use('/logout', logout);
 app.use('/admin', country);

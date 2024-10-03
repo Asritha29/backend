@@ -20,7 +20,7 @@ const employeeSchema = new mongoose.Schema({
       },
       gender:{
         type: String,
-        required: true
+        // required: true
       },
       maritalStatus:{
         type: String,
@@ -28,13 +28,13 @@ const employeeSchema = new mongoose.Schema({
       },
       phoneNumber:{
         type: String,
-        // required: true,
+        required: true,
         unique:true
       },
       email:{
         type: String,
         unique: true,
-        // required: true
+        required: false
       },
       empImg:{
         type: String,
@@ -108,8 +108,8 @@ const employeeSchema = new mongoose.Schema({
       },
       ismanager:{
        type: Boolean,
+       default: false,
        required: true,
-       default: false
       
       },
       designation:{
@@ -174,14 +174,14 @@ const employeeSchema = new mongoose.Schema({
       },
       petrolAllow:{
         type: Boolean,
+        default:false,
         required: true,
-        default:false
      
       },
       incentives:{
         type: Boolean,
+        default: false,
         required:true,
-        default: false
       },
       spcialAllowances:{
         type: Boolean,

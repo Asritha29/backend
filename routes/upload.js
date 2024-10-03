@@ -8,14 +8,11 @@ const Kyc = require('../model/kyc');
 const Education = require('../model/educations');
 const Experience = require('../model/experience');
 
-
 const XLSX_MIME_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 const XLSX_EXTENSION = '.xlsx';
 
-
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
-
 
 router.post('/upload', upload.single('file'), async (req, res) => {
   try {
@@ -32,45 +29,39 @@ router.post('/upload', upload.single('file'), async (req, res) => {
       throw new Error('Empty file or invalid format.');
     }
 
+    // Extract headers and data rows
     const headers = rows[0];
-    const data = rows.slice(1).map((row) => {
-      return headers.reduce((acc, header, index) => {
+    const data = rows.slice(1).map((row) =>
+      headers.reduce((acc, header, index) => {
         acc[header] = row[index];
         return acc;
-      }, {});
-    });
+      }, {})
+    );
 
     const employeePromises = data.map(async (employeeData) => {
       try {
-        const { empId, phoneNumber } = employeeData; 
-        let user = await User.findOne({ empId });
+        const { empId, phoneNumber } = employeeData;
 
+        let user = await User.findOne({ empId });
         if (!user) {
           user = new User({
             phoneNumber,
             empId,
-            password: 'globusit',
+            password: 'globusit', 
           });
           await user.save();
         }
 
         let employee = await Employee.findOne({ empId });
-
         if (!employee) {
           employee = new Employee({
             ...employeeData,
-            user: user._id,
+            user: user._id, 
           });
           await employee.save();
-
-          const kyc = new Kyc({ ...employeeData, employee: employee._id });
-          await kyc.save();
-
-          const experience = new Experience({ ...employeeData, employee: employee._id });
-          await experience.save();
-
-          const education = new Education({ ...employeeData, employee: employee._id });
-          await education.save();
+          await new Kyc({ ...employeeData, employee: employee._id }).save();
+          await new Experience({ ...employeeData, employee: employee._id }).save();
+          await new Education({ ...employeeData, employee: employee._id }).save();
         } else {
           console.warn('Employee already exists:', empId);
         }
@@ -83,11 +74,14 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     });
 
     const results = await Promise.allSettled(employeePromises);
-    const errors = results.filter(result => result.status === 'rejected');
+
+    const errors = results
+      .filter(result => result.status === 'rejected' || !result.value.success)
+      .map(result => result.reason || result.value);
 
     res.status(200).json({
       message: 'Data uploaded and processed successfully',
-      errors: errors.map(err => err.reason)
+      errors: errors.length > 0 ? errors : null
     });
   } catch (error) {
     console.error('Error processing file:', error);
