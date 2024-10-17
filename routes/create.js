@@ -63,7 +63,7 @@ router.post('/create', (req, res) => {
       village, nameapb, lpa, salary, netsalary, petrolAllow, basic, hra, ca, other, allowance, pf, 
       pt, esi, esinumber, genratedeis, tds, insurance, incentives, spcialAllowances, Arrears, loan, 
       bankName, accNo, uanNumber, ifscNumber, course, courseType, institution, formdata, toDate, 
-      experience, from, to, contractStart, contractEnd, aadharno, famrelation, familyName ,medical,
+      experience, from, to, contractStart, contractEnd, aadharno, famrelation, familyName, medical, work, pfNo,
     } = req.body;
 
     // File paths
@@ -74,19 +74,17 @@ router.post('/create', (req, res) => {
     const aadhaarPanUpFilePath = getFilePath(req.files?.['aadhaarPanUp']);
 
     try {
-      // Create employee record
       const newEmployee = new Employee({
         fullName, fatherName, motherName, dob, gender, maritalStatus, phoneNumber, email, empImg: empImgFilePath,
         aadhaar, pan, address, permenentadrs, emgContact, emgRelation, emgNumber, empId, doj, type, team, status,
         exitformalities, managerName, designation, ismanager, country, state, district, mandal, village, nameapb,
         lpa, salary, netsalary, petrolAllow, incentives, Arrears, spcialAllowances, basic, hra, ca, other, allowance,
-        pf, pt, esi, esinumber, genratedeis, tds, insurance, loan, bankName, accNo, uanNumber, ifscNumber,
+        pf, pt, esi, esinumber, genratedeis, tds, insurance, loan, bankName, accNo, uanNumber, ifscNumber, pfNo,
         contractStart, contractEnd, aadhaarPanUp: aadhaarPanUpFilePath, medical,
       });
 
       const savedEmployee = await newEmployee.save();
 
-      // Create KYC record
       const newKyc = new Kyc({
         aadharno: Array.isArray(aadharno) ? aadharno : [aadharno],
         familyName: Array.isArray(familyName) ? familyName : [familyName],
@@ -97,39 +95,35 @@ router.post('/create', (req, res) => {
 
       const savedKyc = await newKyc.save();
 
-    // Create education record if formdata exists and is an array
-let savedEducation = null;
-if (Array.isArray(formdata) && formdata.length > 0) {
-  const newEducation = new Education({
-    empId,
-    educationDetails: formdata.map((detail, index) => ({
-      course: course && course[index] ? course[index] : '',
-      courseType: courseType && courseType[index] ? courseType[index] : '',
-      institution: institution && institution[index] ? institution[index] : '',
-      fromDate: new Date(formdata[index]),
-      toDate: toDate && toDate[index] ? new Date(toDate[index]) : null,
-      educationdoc: educationDocFilePath
-    }))
-  });
-  savedEducation = await newEducation.save();
-}
+      let savedEducation = null;
+      if (Array.isArray(formdata) && formdata.length > 0) {
+        const newEducation = new Education({
+          empId,
+          educationDetails: formdata.map((detail, index) => ({
+            course: course && course[index] ? course[index] : '',
+            courseType: courseType && courseType[index] ? courseType[index] : '',
+            institution: institution && institution[index] ? institution[index] : '',
+            fromDate: new Date(detail),
+            toDate: toDate && toDate[index] ? new Date(toDate[index]) : null,
+            educationdoc: educationDocFilePath
+          }))
+        });
+        savedEducation = await newEducation.save();
+      }
 
-
-      // Create experience record if experience data exists
       const newExperience = new Experience({
         empId,
-        experience: Array.isArray(experience) ? experience : [],
-        work: Array.isArray(work) ? work : [],
-        from: Array.isArray(from) ? from : [],
-        to: Array.isArray(to) ? to : [],
+        experience,
+        work,
+        from,
+        to,
         experiencedoc: experienceDocFilePath
-      });
+      }); 
       const savedExperience = await newExperience.save();
 
-      // Create user record
       const newUser = new User({
         phoneNumber,
-        password: 'globusit', // Default password
+        password: 'globusit',
         empId,
         eId: savedEmployee._id,
       });
@@ -149,6 +143,6 @@ if (Array.isArray(formdata) && formdata.length > 0) {
       res.status(500).json({ message: 'Failed to create employee.', error: error.message });
     }
   });
-});
+}); 
 
 module.exports = router;

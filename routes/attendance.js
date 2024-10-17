@@ -31,22 +31,20 @@ router.post('/attendance', upload.single('file'), async (req, res) => {
 
     // Process each row
     for (const row of data) {
-      const empId = row['Employee ID']; // Extract empId from the row
+      const empId = row['Employee ID']; 
 
-      // Check if an attendance record already exists for this empId, year, and month
       const existingRecord = await Attendance.findOne({ empId, year, month });
       if (existingRecord) {
         console.log(`Attendance for Employee ID ${empId} for ${month}/${year} already exists. Skipping this record.`);
-        continue; // Skip to the next row if a record exists
+        continue; 
       }
-
-      // Create a new attendance record
       const newAttendance = new Attendance({
         fullName1: row['Full Name'],  
         empId,   
         presentdays: row['Present Days'],
         absentdays: row['Absent Days'],
         incentives1:row['Incentives'],
+        totalWorkingDays:row['Total Working Days'],
         year,
         month
       });

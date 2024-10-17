@@ -95,8 +95,7 @@ const employeeSchema = new mongoose.Schema({
       },
       status:{
         type: String,
-        required: true,
-        default: 'Active'
+        default: 'Active',
       },
       exitformalities:{
         type: String,
@@ -203,7 +202,7 @@ const employeeSchema = new mongoose.Schema({
        
       },
       pt:{
-        type: Boolean,
+        type: String,
         default: false
       },
       vehicle:{
@@ -260,6 +259,9 @@ const employeeSchema = new mongoose.Schema({
       contractEnd:{
         type:String,
 
+      },
+      pfNo:{
+        type:String,
       },
       createdAt: {
         type: Date,

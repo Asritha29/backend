@@ -20,7 +20,7 @@ const attendanceSechema= new mongoose.Schema({
     absentdays: {
         type: Number,
         // required: true,
-    },
+    },  
     year:{
         type:Number,
         default:Date.now()
@@ -28,6 +28,11 @@ const attendanceSechema= new mongoose.Schema({
     incentives1:{
         type: String,
     },
+    totalWorkingDays:{
+        type: String,
+        required:true,
+    },
+    
 
 })
 const Attendance = mongoose.model('Attendance', attendanceSechema);

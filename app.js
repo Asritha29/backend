@@ -31,6 +31,8 @@ const client = require('./routes/client');
 const ismainClient = require('./routes/ismainClient');
 const getclient = require('./routes/getClient');
 const resetPassword = require('./routes/reserpassword');
+const department = require('./routes/getbydepartment');
+const clientUpload = require('./routes/clientupload');
 
 // Initialize Express app
 const app = express();
@@ -92,8 +94,10 @@ app.use('/admin', auth, authorizeRoles('Admin', 'Hr', 'User'), ismanager);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr', 'User'), ismainClient);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr', 'User'), getclient);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr', 'User'), employeeget);
+app.use('/admin', auth, authorizeRoles('Admin', 'Hr', 'User'), department);
 app.use('/user' , auth, authorizeRoles('Admin', 'Hr', 'User'), payslip);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr', 'User'), client);
+app.use('/admin', auth, authorizeRoles('Admin', 'Hr', 'User'), clientUpload);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), employeeupload);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), employeeRoutes);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), attendance);
