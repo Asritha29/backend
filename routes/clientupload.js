@@ -24,8 +24,6 @@ router.post('/clientUpload', upload.single('file'), async (req, res) => {
     if (!rows || rows.length === 0) {
       throw new Error('Empty file or invalid format.');
     }
-
-    // Extract headers and data rows
     const headers = rows[0];
     const data = rows.slice(1).map((row) =>
       headers.reduce((acc, header, index) => {
@@ -37,10 +35,6 @@ router.post('/clientUpload', upload.single('file'), async (req, res) => {
     const clientPromises = data.map(async (clientData) => {
       try {
         const { clientEmail } = clientData;
-
-        // Assuming the user object is added to the request context via middleware
-        const userId = req.user._id; // Example, extract user from JWT or session
-        
         let existingClient = await Client.findOne({ clientEmail });
         if (!existingClient) {
           const newClient = new Client({
@@ -52,7 +46,7 @@ router.post('/clientUpload', upload.single('file'), async (req, res) => {
           console.warn(`Client already exists: ${clientEmail}`);
         }
 
-        return { success: true, clientEmail };  // Include clientEmail in the response
+        return { success: true, clientEmail };
       } catch (error) {
         console.error('Error processing client:', error);
         return { success: false, error: error.message };

@@ -28,8 +28,6 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     if (!rows || rows.length === 0) {
       throw new Error('Empty file or invalid format.');
     }
-
-    // Extract headers and data rows
     const headers = rows[0];
     const data = rows.slice(1).map((row) =>
       headers.reduce((acc, header, index) => {

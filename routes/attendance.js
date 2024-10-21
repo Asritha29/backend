@@ -44,6 +44,8 @@ router.post('/attendance', upload.single('file'), async (req, res) => {
         presentdays: row['Present Days'],
         absentdays: row['Absent Days'],
         incentives1:row['Incentives'],
+        spcialAllowances1:row['Spcial Allowances'],
+        Arrears1:row['Arrears'],
         totalWorkingDays:row['Total Working Days'],
         year,
         month

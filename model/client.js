@@ -12,11 +12,11 @@ const ClientSchema = new mongoose.Schema({
   },
   conNumber:{
     type:Number,
-    require:true,
+    // require:true,
   },
   clientEmail:{
     type:String,
-    required:true
+    // required:true
   },
   address:{
     type:String,
@@ -24,7 +24,7 @@ const ClientSchema = new mongoose.Schema({
   },
   ismainClient:{
     type:Boolean,
-    required:true,
+    // required:true,
     default:false
   },
   mainClient:{
@@ -41,7 +41,7 @@ const ClientSchema = new mongoose.Schema({
   },
   status:{
     type:String,
-    required:true,
+    // required:true,
     default:'Active'
   },
   contractStart:{

@@ -28,6 +28,12 @@ const attendanceSechema= new mongoose.Schema({
     incentives1:{
         type: String,
     },
+    Arrears1:{
+        type: String,
+    },
+    spcialAllowances1:{
+        type: String,
+    },
     totalWorkingDays:{
         type: String,
         required:true,
