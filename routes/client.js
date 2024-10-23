@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const Client = require('../model/client');
 
-// Set up storage with Multer
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = 'uploads/';
@@ -23,17 +23,9 @@ const storage = multer.diskStorage({
 // Multer middleware
 const workOrder = multer({ storage: storage });
 
-// Client creation route with file upload
 router.post('/client', workOrder.single('file'), async (req, res) => {
   try {
-    console.log(req.file);
-    
-    // Check if file is uploaded
-    if (!req.file) {
-      return res.status(400).send('No file uploaded.');
-    }
 
-    // Destructure request body
     const {
       clientName, 
       contName, 
@@ -48,12 +40,7 @@ router.post('/client', workOrder.single('file'), async (req, res) => {
       contractEnd,
     } = req.body;
 
-    // Extract filename and construct file URL
-    const { filename } = req.file;
-    const fileUrl = `http://localhost:5006/uploads/${filename}`;
-
-    // Create a new Client document
-    const newClient = new Client({
+    const clientData = {
       clientName, 
       contName, 
       conNumber, 
@@ -63,18 +50,25 @@ router.post('/client', workOrder.single('file'), async (req, res) => {
       mainClient, 
       gstNumber, 
       status, 
-      workOrder: fileUrl,
       contractStart,
       contractEnd,
-    });
+    };
 
-    // Save the client to the database
+    // Check if a file is uploaded, and only add workOrder if file exists
+    if (req.file) {
+      const { filename } = req.file;
+      const fileUrl = `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${filename}`;
+      clientData.workOrder = fileUrl;  // Add the file URL if a file is uploaded
+    }
+
+    // Create and save the new Client document
+    const newClient = new Client(clientData);
     await newClient.save();
 
-    // Respond with success and file URL
-    res.json({ status: 'success', workOrder: fileUrl });
+    // Respond with success message and file URL (if uploaded)
+    res.json({ status: 'success', workOrder: clientData.workOrder || null });
   } catch (error) {
-    console.error('Error uploading file:', error);
+    console.error('Error creating client:', error);
     res.status(500).send('Internal Server Error');
   }
 });

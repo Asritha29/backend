@@ -198,8 +198,16 @@ const employeeSchema = new mongoose.Schema({
        
       },
       allowance:{
-        type: String,
+        type: Boolean,
        
+      },
+      pfType:{
+        type: String,
+        
+      },
+      pfFixedeamount:{
+        type: String,
+
       },
       pt:{
         type: String,
@@ -214,6 +222,14 @@ const employeeSchema = new mongoose.Schema({
         default: false
       },
       esinumber:{
+        type: String,
+       
+      },
+      esiType:{
+        type: String,
+       
+      },
+      esiFixedAmount:{
         type: String,
        
       },

@@ -24,6 +24,7 @@ router.post('/clientUpload', upload.single('file'), async (req, res) => {
     if (!rows || rows.length === 0) {
       throw new Error('Empty file or invalid format.');
     }
+    
     const headers = rows[0];
     const data = rows.slice(1).map((row) =>
       headers.reduce((acc, header, index) => {
@@ -34,19 +35,18 @@ router.post('/clientUpload', upload.single('file'), async (req, res) => {
 
     const clientPromises = data.map(async (clientData) => {
       try {
-        const { clientEmail } = clientData;
-        let existingClient = await Client.findOne({ clientEmail });
+        const { clientName } = clientData;
+        let existingClient = await Client.findOne({ clientName });
         if (!existingClient) {
           const newClient = new Client({
             ...clientData,
-            user: userId, 
           });
           await newClient.save();
+          return { success: true, clientName };  
         } else {
-          console.warn(`Client already exists: ${clientEmail}`);
+          console.warn(`Client already exists: ${clientName}`);
+          return { success: false, message: `Client already exists: ${clientName}` };
         }
-
-        return { success: true, clientEmail };
       } catch (error) {
         console.error('Error processing client:', error);
         return { success: false, error: error.message };
@@ -61,7 +61,7 @@ router.post('/clientUpload', upload.single('file'), async (req, res) => {
 
     res.status(200).json({
       message: 'Data uploaded and processed successfully',
-      errors: errors.length > 0 ? errors : null
+      errors: errors.length > 0 ? errors : null,
     });
   } catch (error) {
     console.error('Error processing file:', error);

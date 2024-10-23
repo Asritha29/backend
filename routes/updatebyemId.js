@@ -115,6 +115,10 @@ router.put('/update/:empId', (req, res) => {
         ifscaNumber:req.body.ifscaNumber,
         contractStart:req.body.contractStart,
         contractEnd:req.body.contractEnd,
+        esiFixedAmount:req.body.esiFixedAmount,
+        esiType:req.body.esiType,
+        pfFixedeamount:body.pfFixedeamount,
+        pfType:body.pfType,
         empImg: getFilePath(req.files['empImg']),
         aadhaarPanUp: getFilePath(req.files['aadhaarPanUp']),
       };

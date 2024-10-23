@@ -63,7 +63,7 @@ router.post('/create', (req, res) => {
       village, nameapb, lpa, salary, netsalary, petrolAllow, basic, hra, ca, other, allowance, pf, 
       pt, esi, esinumber, genratedeis, tds, insurance, incentives, spcialAllowances, Arrears, loan, 
       bankName, accNo, uanNumber, ifscNumber, course, courseType, institution, formdata, toDate, 
-      experience, from, to, contractStart, contractEnd, aadharno, famrelation, familyName, medical, work, pfNo,
+      experience, from, to, contractStart, contractEnd, aadharno, famrelation, familyName, medical, work, pfNo,pfType,pfFixedeamount,esiFixedAmount,esiType
     } = req.body;
 
     // File paths
@@ -80,7 +80,7 @@ router.post('/create', (req, res) => {
         exitformalities, managerName, designation, ismanager, country, state, district, mandal, village, nameapb,
         lpa, salary, netsalary, petrolAllow, incentives, Arrears, spcialAllowances, basic, hra, ca, other, allowance,
         pf, pt, esi, esinumber, genratedeis, tds, insurance, loan, bankName, accNo, uanNumber, ifscNumber, pfNo,
-        contractStart, contractEnd, aadhaarPanUp: aadhaarPanUpFilePath, medical,
+        contractStart, contractEnd, aadhaarPanUp: aadhaarPanUpFilePath, medical,pfFixedeamount,pfType,esiType,esiFixedAmount
       });
 
       const savedEmployee = await newEmployee.save();
