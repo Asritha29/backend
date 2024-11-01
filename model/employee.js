@@ -33,8 +33,6 @@ const employeeSchema = new mongoose.Schema({
       },
       email:{
         type: String,
-        unique: true,
-        required: false
       },
       empImg:{
         type: String,
@@ -89,6 +87,12 @@ const employeeSchema = new mongoose.Schema({
         type: String,
         // required: true
       },
+      // clientId:{
+      //   type: mongoose.Schema.Types.ObjectId,
+      //   ref: 'clients', 
+      //   default: null,
+      
+      // },
       team:{
         type: String,
       
@@ -108,7 +112,6 @@ const employeeSchema = new mongoose.Schema({
       ismanager:{
        type: Boolean,
        default: false,
-       required: true,
       
       },
       designation:{
@@ -174,13 +177,11 @@ const employeeSchema = new mongoose.Schema({
       petrolAllow:{
         type: Boolean,
         default:false,
-        required: true,
      
       },
       incentives:{
         type: Boolean,
         default: false,
-        required:true,
       },
       spcialAllowances:{
         type: Boolean,
@@ -192,14 +193,14 @@ const employeeSchema = new mongoose.Schema({
                
        
       },
-      pf:{
+      pf:{ 
         type: Boolean,
         default:false
        
       },
       allowance:{
         type: Boolean,
-       
+        default:false
       },
       pfType:{
         type: String,
@@ -211,7 +212,7 @@ const employeeSchema = new mongoose.Schema({
       },
       pt:{
         type: String,
-        default: false
+        // default: false
       },
       vehicle:{
         type: Boolean,

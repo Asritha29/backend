@@ -31,6 +31,11 @@ const ClientSchema = new mongoose.Schema({
     type:String,
     // required:true
   },
+  // mainClientId:{
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'clients', 
+  //   default: null,
+  // },
   gstNumber:{
     type:String,
 
@@ -41,7 +46,7 @@ const ClientSchema = new mongoose.Schema({
   },
   status:{
     type:String,
-    // required:true,
+    // enum: ['Active', 'Inactive'],
     default:'Active'
   },
   contractStart:{
@@ -55,6 +60,13 @@ const ClientSchema = new mongoose.Schema({
 });
 
 
-const client = mongoose.model('clients', ClientSchema);
+// ClientSchema.pre('save', function(next) {
+//   if (this.isMainClient && this.mainClientId) {
+//     return next(new Error("A client cannot be both a main client and a sub-client."));
+//   }
+//   next();
+// });
 
-module.exports = client
+const Client = mongoose.model('clients', ClientSchema);
+
+module.exports = Client;

@@ -2,16 +2,14 @@ const express = require('express');
 const router = express.Router();
 const Employee = require('../model/employee');
 
-// Route to get employees by team/department
 router.get('/department', async (req, res) => {
   try {
-    const { team } = req.query;  // Use req.query for query parameters
+    const { team } = req.query; 
 
     if (!team) {
       return res.status(400).json({ message: 'Team/Department is required' });
     }
 
-    // Fetch employees based on the team/department
     const employees = await Employee.find({ team });
 
     if (!employees || employees.length === 0) {

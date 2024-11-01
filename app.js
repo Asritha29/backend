@@ -33,12 +33,14 @@ const getclient = require('./routes/getClient');
 const resetPassword = require('./routes/reserpassword');
 const department = require('./routes/getbydepartment');
 const clientUpload = require('./routes/clientupload');
+const updateEmployee = require('./routes/updatebyemId');
 const getattendance = require('./routes/getattendace');
 const attendancebyempId = require('./routes/editAttendance');
 const updateAttendance = require('./routes/editAttendance');
 const getEmpbyId = require('./routes/getemployeid');
 const getclientbyname = require('./routes/editClient');
 const updateclient = require('./routes/editClient');
+const employeebyclient = require('./routes/employeebymainclient');
 // Initialize Express app
 const app = express();
 app.use(express.json());
@@ -106,12 +108,14 @@ app.use('/admin', auth, authorizeRoles('Admin', 'Hr', 'User'), client);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr', 'User'), clientUpload);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), employeeupload);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), employeeRoutes);
+app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), updateEmployee);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), attendance);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), getattendance);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), attendancebyempId);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), updateAttendance);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), getclientbyname);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), updateclient);
+app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), employeebyclient);
 // Error Handling Middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);

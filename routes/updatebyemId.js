@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 // Multer setup
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 50 * 1024 * 1024 },
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit
   fileFilter: (req, file, cb) => {
     if (!file.mimetype.match(/(pdf|png|jpeg|jpg)/)) {
       return cb(new Error('Only PDF, PNG, and JPEG files are allowed!'), false);
@@ -44,7 +44,7 @@ const upload = multer({
   { name: 'aadhaarPanUp', maxCount: 1 },
 ]);
 
-const getFilePath = (file) => (file ? `${BASE_URL}${file[0].filename}` : null);
+const getFilePath = (file) => (file && file.length > 0 ? `${BASE_URL}${file[0].filename}` : null);
 
 router.put('/update/:empId', (req, res) => {
   const { empId } = req.params;
@@ -60,65 +60,68 @@ router.put('/update/:empId', (req, res) => {
     }
 
     try {
+      // Prepare the updated employee data
       const updatedData = {
         fullName: req.body.fullName,
         fatherName: req.body.fatherName,
         motherName: req.body.motherName,
-        dob:req.body.motherName,
-        gender:req.body.gender,
-        maritalStatus:req.body.maritalStatus,
-        phoneNumber:req.body.phoneNumber,
-        email:req.body.email,
-        address:req.body.address,
-        permenentadrs:req.body.permenentadrs,
-        emgContact:req.body.emgContact,
-        emgRelation:req.body.emgRelation,
-        emgNumber:req.body.emgNumber,
-        empId:req.body.empId,
-        doj:req.body.doj,
-        type:req.body.type,
-        team:req.body.team,
-        status:req.body.status,
-        exitformalities:req.body.exitformalities,
-        managerName:req.body.managerName,
-        designation:req.body.designation,
-        ismanager:req.body.ismanager,
-        country:req.body.country,
-        state:req.body.state,
-        district:req.body.district,
-        mandal:req.body.mandal,
-        village:req.body.village,
-        nameapb:req.body.nameapb,
-        lpa:req.body.lpa,
-        salary:req.body.salary,
+        dob: req.body.dob,
+        gender: req.body.gender,
+        maritalStatus: req.body.maritalStatus,
+        phoneNumber: req.body.phoneNumber,
+        email: req.body.email,
+        address: req.body.address,
+        permanentAddress: req.body.permanentAddress,
+        emgContact: req.body.emgContact,
+        emgRelation: req.body.emgRelation,
+        emgNumber: req.body.emgNumber,
+        empId: req.body.empId,
+        doj: req.body.doj,
+        type: req.body.type,
+        team: req.body.team,
+        status: req.body.status,
+        exitformalities: req.body.exitformalities,
+        managerName: req.body.managerName,
+        designation: req.body.designation,
+        ismanager: req.body.ismanager,
+        country: req.body.country,
+        state: req.body.state,
+        district: req.body.district,
+        mandal: req.body.mandal,
+        village: req.body.village,
+        nameapb: req.body.nameapb,
+        lpa: req.body.lpa,
+        salary: req.body.salary,
         netsalary: req.body.netsalary,
-        petrolAllow:req.body.petrolAllow,
-        incentives:req.body.incentives,
-        Arrears:req.body.Arrears,
-        spcialAllowances:req.body.spcialAllowances,
-        basic:req.body.basic,
-        hra:req.body.hra,
-        ca:req.body.ca,
-        other:req.body.other,
-        allowance:req.body.allowance, 
-        pf:req.body.pf,
-        pt:req.body.pt,
-        esi:req.body.esi,
-        esinumber:req.body.esinumber,
-        genratedeis:req.body.genratedeis,
-        tds:req.body.tds,
-        insurance:req.body.insurance,
-        loan:req.body.lone,
-        bankName:req.body.bankName,
-        accNo:req.body.accNo,
-        uanNumber:req.body.uanNumber,
-        ifscaNumber:req.body.ifscaNumber,
-        contractStart:req.body.contractStart,
-        contractEnd:req.body.contractEnd,
-        esiFixedAmount:req.body.esiFixedAmount,
-        esiType:req.body.esiType,
-        pfFixedeamount:body.pfFixedeamount,
-        pfType:body.pfType,
+        petrolAllow: req.body.petrolAllow,
+        incentives: req.body.incentives,
+        Arrears: req.body.Arrears,
+        spcialAllowances: req.body.spcialAllowances,
+        basic: req.body.basic,
+        hra: req.body.hra,
+        ca: req.body.ca,
+        other: req.body.other,
+        allowance: req.body.allowance,
+        pf: req.body.pf,
+        pt: req.body.pt,
+        esi: req.body.esi,
+        esinumber: req.body.esinumber,
+        generatedeis: req.body.generatedeis,
+        tds: req.body.tds,
+        insurance: req.body.insurance,
+        loan: req.body.loan,
+        bankName: req.body.bankName,
+        accNo: req.body.accNo,
+        uanNumber: req.body.uanNumber,
+        ifscaNumber: req.body.ifscaNumber,
+        contractStart: req.body.contractStart,
+        contractEnd: req.body.contractEnd,
+        esiFixedAmount: req.body.esiFixedAmount,
+        esiType: req.body.esiType,
+        pfFixedAmount: req.body.pfFixedAmount,
+        experience: req.body.experience,
+        pfType: req.body.pfType,
+        clientId:req.body.clientId,
         empImg: getFilePath(req.files['empImg']),
         aadhaarPanUp: getFilePath(req.files['aadhaarPanUp']),
       };
@@ -136,21 +139,33 @@ router.put('/update/:empId', (req, res) => {
         { new: true }
       );
 
-      const updatedEducation = await Education.findOneAndUpdate(
-        { empId },
-        {
-          course: Array.isArray(req.body.course) ? req.body.course : [req.body.course],
-          // ... other fields
+      // Update education details
+      const educationDetails = Array.isArray(req.body.educationDetails) ? req.body.educationDetails : [];
+      if (educationDetails.length > 0) {
+        const educationData = educationDetails.map((detail, index) => ({
+          course: req.body.course && req.body.course[index] ? req.body.course[index] : '',
+          courseType: req.body.courseType && req.body.courseType[index] ? req.body.courseType[index] : '',
+          institution: req.body.institution && req.body.institution[index] ? req.body.institution[index] : '',
+          fromDate: detail.fromDate ? new Date(detail.fromDate) : null,
+          toDate: detail.toDate ? new Date(detail.toDate) : null,
           educationdoc: getFilePath(req.files['educationdoc']),
-        },
-        { new: true }
-      );
+        }));
 
-      const updatedExperience = await Experience.findOneAndUpdate(
+        await Education.findOneAndUpdate(
+          { empId },
+          { $set: { educationDetails: educationData } },
+          { new: true }
+        );
+      }
+
+      // Update experience details
+      await Experience.findOneAndUpdate(
         { empId },
         {
-          experience: Array.isArray(req.body.experience) ? req.body.experience : [req.body.experience],
-          // ... other fields
+          experience: req.body.experience,
+          work: req.body.work,
+          from: req.body.from,
+          to: req.body.to,
           experiencedoc: getFilePath(req.files['experiencedoc']),
         },
         { new: true }
@@ -159,8 +174,6 @@ router.put('/update/:empId', (req, res) => {
       res.status(200).json({
         employee: updatedEmployee,
         kyc: updatedKyc,
-        education: updatedEducation,
-        experience: updatedExperience,
       });
     } catch (error) {
       console.error('Error updating employee:', error);

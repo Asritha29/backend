@@ -33,13 +33,19 @@ router.post('/clientUpload', upload.single('file'), async (req, res) => {
       }, {})
     );
 
+    // Fetching main clients to use in the upload process
+    const mainClients = await Client.find({ ismainClient: true }).lean();
+    const mainClientMap = new Map(mainClients.map(client => [client.clientName, client._id]));
+
     const clientPromises = data.map(async (clientData) => {
       try {
-        const { clientName } = clientData;
+        const { clientName, mainClientName } = clientData; // Assume mainClientName is the field in your Excel
         let existingClient = await Client.findOne({ clientName });
+
         if (!existingClient) {
           const newClient = new Client({
             ...clientData,
+            mainClientId: mainClientMap.get(mainClientName) || null, // Assign main client ID if found
           });
           await newClient.save();
           return { success: true, clientName };  

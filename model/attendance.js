@@ -28,6 +28,9 @@ const attendanceSechema= new mongoose.Schema({
     incentives1:{
         type: String,
     },
+    allowance1:{
+        type: String,
+    },
     Arrears1:{
         type: String,
     },

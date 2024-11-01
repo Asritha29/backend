@@ -34,6 +34,7 @@ router.post('/client', workOrder.single('file'), async (req, res) => {
       address, 
       ismainClient, 
       mainClient, 
+      // mainClientId, 
       gstNumber, 
       status,
       contractStart,
@@ -48,24 +49,22 @@ router.post('/client', workOrder.single('file'), async (req, res) => {
       address, 
       ismainClient, 
       mainClient, 
+      // mainClientId, 
       gstNumber, 
       status, 
       contractStart,
       contractEnd,
     };
 
-    // Check if a file is uploaded, and only add workOrder if file exists
     if (req.file) {
       const { filename } = req.file;
       const fileUrl = `http://globusit-env.eba-5wfvbmm7.ap-south-1.elasticbeanstalk.com/uploads/${filename}`;
-      clientData.workOrder = fileUrl;  // Add the file URL if a file is uploaded
+      clientData.workOrder = fileUrl;  
     }
 
-    // Create and save the new Client document
     const newClient = new Client(clientData);
     await newClient.save();
 
-    // Respond with success message and file URL (if uploaded)
     res.json({ status: 'success', workOrder: clientData.workOrder || null });
   } catch (error) {
     console.error('Error creating client:', error);

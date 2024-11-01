@@ -34,7 +34,7 @@ router.put('/editAttendance/:empId', async (req, res) => {
     return res.status(400).json({ status: 'error', message: 'Year and month are required.' });
   }
 
-  const { presentdays, absentdays, totalWorkingDays, incentives1, specialAllowances1, Arrears1 } = req.body;
+  const { presentdays, absentdays, totalWorkingDays, incentives1, specialAllowances1, Arrears1, allowance1 } = req.body;
 
   if (presentdays < 0 || absentdays < 0 || totalWorkingDays < 0) {
     return res.status(400).json({ status: 'error', message: 'Days values cannot be negative.' });
@@ -45,6 +45,7 @@ router.put('/editAttendance/:empId', async (req, res) => {
     absentdays,
     totalWorkingDays,
     incentives1,
+    allowance1,
     specialAllowances1,
     Arrears1,
   };

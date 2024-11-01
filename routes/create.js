@@ -62,7 +62,7 @@ router.post('/create', (req, res) => {
       status, exitformalities, managerName, designation, ismanager, country, state, district, mandal, 
       village, nameapb, lpa, salary, netsalary, petrolAllow, basic, hra, ca, other, allowance, pf, 
       pt, esi, esinumber, genratedeis, tds, insurance, incentives, spcialAllowances, Arrears, loan, 
-      bankName, accNo, uanNumber, ifscNumber, course, courseType, institution, formdata, toDate, 
+      bankName, accNo, uanNumber, ifscNumber, course, courseType, institution, formdata, toDate, clientId,
       experience, from, to, contractStart, contractEnd, aadharno, famrelation, familyName, medical, work, pfNo,pfType,pfFixedeamount,esiFixedAmount,esiType
     } = req.body;
 
@@ -79,7 +79,7 @@ router.post('/create', (req, res) => {
         aadhaar, pan, address, permenentadrs, emgContact, emgRelation, emgNumber, empId, doj, type, team, status,
         exitformalities, managerName, designation, ismanager, country, state, district, mandal, village, nameapb,
         lpa, salary, netsalary, petrolAllow, incentives, Arrears, spcialAllowances, basic, hra, ca, other, allowance,
-        pf, pt, esi, esinumber, genratedeis, tds, insurance, loan, bankName, accNo, uanNumber, ifscNumber, pfNo,
+        pf, pt, esi, esinumber, genratedeis, tds, insurance, loan, bankName, accNo, uanNumber, ifscNumber, pfNo,clientId,
         contractStart, contractEnd, aadhaarPanUp: aadhaarPanUpFilePath, medical,pfFixedeamount,pfType,esiType,esiFixedAmount
       });
 
