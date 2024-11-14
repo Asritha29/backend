@@ -1,4 +1,3 @@
-// routes/ismanager.js
 const express = require('express');
 const router = express.Router();
 const Employee = require('../model/employee');
