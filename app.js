@@ -1,4 +1,3 @@
-// Required dependencies
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -10,7 +9,7 @@ const multer = require('multer');
 const path = require('path');
 // const port = 5006;
 
-// Route imports
+
 const connectDB = require('./model/config/db');
 const employeeupload = require('./routes/upload');
 const employeeRoutes = require('./routes/create');
@@ -79,7 +78,6 @@ const authorizeRoles = (...roles) => {
   };
 };
 
-// Routes
 app.use('/user', resetPassword);
 app.use('/user', login);
 app.use('/logout', logout);
@@ -116,16 +114,15 @@ app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), updateAttendance);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), getclientbyname);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), updateclient);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), employeebyclient);
-// Error Handling Middleware
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send({ message: 'Something went wrong!' });
 });
 
-// Connect to MongoDB
+
 connectDB();
 
-// Start server
 const port = process.env.PORT || 5006;
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);

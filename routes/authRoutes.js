@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const UserModel = require('../model/user'); 
 const { authenticateJWT, authorizeRoles } = require('../middleware/auth'); 
 
-// User registration
 router.post('/register', async (req, res) => {
     const { email, empId, role, fullname, password, phoneNumber } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -20,7 +19,6 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// User login
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const user = await UserModel.findOne({ email });
@@ -38,7 +36,6 @@ router.post('/login', async (req, res) => {
     res.json({ token });
 });
 
-// Protected route example
 router.get('/admin', authenticateJWT, authorizeRoles('admin'), (req, res) => {
     res.json({ message: 'Welcome, admin!' });
 });

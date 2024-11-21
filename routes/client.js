@@ -19,8 +19,6 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
-
-// Multer middleware
 const workOrder = multer({ storage: storage });
 
 router.post('/client', workOrder.single('file'), async (req, res) => {

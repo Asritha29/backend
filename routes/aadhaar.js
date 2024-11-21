@@ -21,11 +21,9 @@ const storage = multer.diskStorage({
 // const storage = multer.memoryStorage();
 const pdf = multer({ storage: storage });
 
-
-// POST route to handle file upload
 router.post('/upload', pdf.single('file'), async (req, res) => {
   try {
-    console.log(req.file); // Log req.file to check its contents
+    console.log(req.file); 
 
     if (!req.file) {
       return res.status(400).send('No file uploaded.');
@@ -34,8 +32,6 @@ router.post('/upload', pdf.single('file'), async (req, res) => {
     const { title } = req.body;
     const { filename } = req.file;
     const fileUrl = `http://localhost:5006/uploads/${filename}`;
-
-    // Save file URL to MongoDB
     const newImage = new Image({ title, url: fileUrl });
     await newImage.save();
 

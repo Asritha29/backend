@@ -25,7 +25,6 @@ router.get('/editAttendance/:empId', async (req, res) => {
   }
 });
 
-// Update attendance record by empId, year, and month
 router.put('/editAttendance/:empId', async (req, res) => {
   const { empId } = req.params;
   const { year, month } = req.query;

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const readXlsxFile = require('read-excel-file/node');
-const Attendance = require('../model/attendance'); // Corrected model name
+const Attendance = require('../model/attendance');
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -28,8 +28,6 @@ router.post('/attendance', upload.single('file'), async (req, res) => {
       });
       return rowData;
     });
-
-    // Process each row
     for (const row of data) {
       const empId = row['Employee ID']; 
 
@@ -51,8 +49,6 @@ router.post('/attendance', upload.single('file'), async (req, res) => {
         year,
         month
       });
-
-      // Save the new attendance record
       await newAttendance.save();
     }
 

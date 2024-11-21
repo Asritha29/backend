@@ -58,7 +58,6 @@ router.put(
     }),
     [Segments.BODY]: Joi.object({
       fullName: Joi.string().optional(),
-      // Add other validations as needed
     }),
   }),
   async (req, res) => {
