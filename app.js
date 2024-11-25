@@ -40,7 +40,8 @@ const getEmpbyId = require('./routes/getemployeid');
 const getclientbyname = require('./routes/editClient');
 const updateclient = require('./routes/editClient');
 const employeebyclient = require('./routes/employeebymainclient');
-// Initialize Express app
+const editEmployee = require('./routes/updatdeemployeebyExcel');
+
 const app = express();
 app.use(express.json());
 app.use(helmet());
@@ -107,6 +108,7 @@ app.use('/admin', auth, authorizeRoles('Admin', 'Hr', 'User'), clientUpload);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), employeeupload);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), employeeRoutes);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), updateEmployee);
+app.use('/hr', auth, authorizeRoles('Admin', 'Hr' ) , editEmployee);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), attendance);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), getattendance);
 app.use('/admin', auth, authorizeRoles('Admin', 'Hr'), attendancebyempId);
